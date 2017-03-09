@@ -32,17 +32,62 @@ package ztest is
    end record;
    -- struct z_stream_s
 
-   Z_OK : constant := 0;
-   Z_STREAM_ERROR : constant := -2;
-   Z_MEM_ERROR : constant := -4;
-   Z_VERSION_ERROR : constant := -6;
-   Z_STREAM_END : constant := 1;
-   Z_NO_FLUSH : constant := 0;
+   type Z_Flush is
+     (
+      Z_Flush_None,
+      Z_Flush_Partial,
+      Z_Flush_Synchronized,
+      Z_Flush_Full,
+      Z_Flush_Finnish,
+      Z_Flush_Block,
+      Z_Flush_Trees
+     );
+   for Z_Flush'Size use Interfaces.C.int'Size;
+   for Z_Flush use
+     (
+      Z_Flush_None => 0,
+      Z_Flush_Partial => 1,
+      Z_Flush_Synchronized => 2,
+      Z_Flush_Full => 3,
+      Z_Flush_Finnish => 4,
+      Z_Flush_Block => 5,
+      Z_Flush_Trees => 6
+     );
+   -- Allowed flush values; see deflate() and inflate() below for details.
 
-   procedure Initialize (Stream : in out Z_Stream; Windows_Size  : in Z_Windows_Size);
+   type Z_Code is
+     (
+      Z_Code_Version_Error,
+      Z_Code_Buffer_Error,
+      Z_Code_Memory_Error,
+      Z_Code_Data_Error,
+      Z_Code_Stream_Error,
+      Z_Code_ERRNO,
+      Z_Code_Ok,
+      Z_Code_Stream_End,
+      Z_Code_Need_Dict
+     );
+   for Z_Code'Size use Interfaces.C.int'Size;
+   for Z_Code use
+     (
+      Z_Code_Version_Error => -6,
+      Z_Code_Buffer_Error => -5,
+      Z_Code_Memory_Error => -4,
+      Z_Code_Data_Error => -3,
+      Z_Code_Stream_Error => -2,
+      Z_Code_ERRNO => -1,
+      Z_Code_Ok => 0,
+      Z_Code_Stream_End => 1,
+      Z_Code_Need_Dict => 2
+     );
+   -- Return codes for the compression/decompression functions.
+   -- Negative values are errors, positive values are used for special but normal events.
 
 
-   function Inflate (Stream : in out Z_Stream; Flush : Interfaces.C.int) return Interfaces.C.int;
+   procedure Initialize_Inflate (Stream : in out Z_Stream; Windows_Size  : in Z_Windows_Size);
+
+
+   function Inflate (Stream : in out Z_Stream; Flush : Z_Flush) return Z_Code;
    pragma Import (C, Inflate, "inflate");
    -- Z_STREAM_END if the end of the compressed data has been reached and all uncompressed output has been produced.
 
