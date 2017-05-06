@@ -113,7 +113,7 @@ package ztest is
    -- Negative values are errors, positive values are used for special but normal events.
 
 
-   procedure Initialize_Inflate (Stream : in out Z_Native_Stream; Windows_Size  : in Z_Windows_Size);
+   procedure Initialize_Inflate (Stream : in out Z_Native_Stream; Windows_Size : in Z_Windows_Size);
 
 
    function Inflate (Stream : in out Z_Native_Stream; Flush : Z_Flush) return Z_Status;

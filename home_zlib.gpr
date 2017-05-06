@@ -11,7 +11,8 @@ library project Home_zlib is
    end Compiler;
 
    package Linker is
-      for Linker_Options use ("-Llib", "-lz");
+      --for Linker_Options use ("-Llib", "-lz");
+      for Linker_Options use ("-Llib", "-lz.dll");
    end Linker;
 
    package Builder is
