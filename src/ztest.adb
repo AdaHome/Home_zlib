@@ -43,6 +43,15 @@ package body ztest is
       Stream.Output_Available := Item'Length;
    end;
 
+   function Generic_Inflate (Stream : in out Z_Native_Stream; Item : out Element; Flush : Z_Flush) return Z_Status is
+      use type Interfaces.C.unsigned;
+      Status : Z_Status;
+   begin
+      Stream.Output_Next := Item'Address;
+      Stream.Output_Available := Item'Size / System.Storage_Unit;
+      Status := Inflate (Stream, Flush);
+      return Status;
+   end;
 
 
 end ztest;

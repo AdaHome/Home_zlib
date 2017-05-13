@@ -124,4 +124,8 @@ package ztest is
    procedure Set_Next_Output (Stream : in out Z_Native_Stream; Item : out Ada.Streams.Stream_Element_Array);
 
 
+   generic
+      type Element is private;
+   function Generic_Inflate (Stream : in out Z_Native_Stream; Item : out Element; Flush : Z_Flush) return Z_Status;
+
 end ztest;
